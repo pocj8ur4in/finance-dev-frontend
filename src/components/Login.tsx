@@ -1,8 +1,11 @@
 import { ForwardedRef, forwardRef, useRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSession } from '@/contexts/session-context';
+import { useSession, LoginUser } from '@/contexts/session-context';
 
-export type LoginUser = { id: string }; // 로그인 시 필요한 사용자 정보
+// 로그인 시 필요한 사용자 정보
+export type UserType = {
+  id: number;
+};
 
 // 외부에서 로그인 컴포넌트 호출할 메서드 정의
 export type LoginHandler = {
@@ -38,15 +41,8 @@ export const Login = forwardRef((_, ref: ForwardedRef<LoginHandler>) => {
 
     const id = idRef.current?.value;
 
-    // 유효성 검사
-    // if (!(id && Number(id) <= 10 && Number(id) > 0)) {
-    //   유효하지 않은 범위의 ID일 경우 경고 알림
-    //   alert('유효하지 않은 ID 범위입니다.');
-    //   return;
-    // }
-
     // 세션에 로그인 및 사용자 페이지 이동
-    if (login(id ?? '')) navigate('/users/' + id);
+    if (login(id ?? '', {} as LoginUser)) navigate('albums');
   };
 
   // 사용자 ID 입력란과 로그인 버튼을 포함한 폼 렌더링

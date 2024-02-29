@@ -1,6 +1,5 @@
 import type { Preview } from '@storybook/react';
-import { cn } from "../src/lib/utils"
-
+import { cn } from '../src/lib/utils';
 
 const preview: Preview = {
   parameters: {

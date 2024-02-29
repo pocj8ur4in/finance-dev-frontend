@@ -10,7 +10,12 @@ import {
   useReducer,
   useEffect,
 } from 'react';
-import { LoginUser, LoginHandler } from '../components/Login';
+import { LoginHandler } from '../components/Login';
+
+export type LoginUser = {
+  id: number;
+  name: string;
+};
 
 export type Session = {
   loginUser: LoginUser | null;
@@ -18,7 +23,7 @@ export type Session = {
 
 type SessionContextProp = {
   session: Session;
-  login: (id: string) => boolean;
+  login: (id: string, loginUser: LoginUser) => boolean;
   logout: () => void;
 };
 
@@ -93,23 +98,23 @@ export const SessionProvider = ({
   const [session, dispatch] = useReducer(sessionReducer, InitSession);
 
   // 로그인
-  const login = useCallback((id: string) => {
+  const login = useCallback((uid: string, { id, name }: LoginUser) => {
     const loginMessage = loginHandlerRef?.current?.loginMessage || alert;
     const focusUserIdInput = loginHandlerRef?.current?.focusUserIdInput;
 
-    if (!Number(id) || isNaN(Number(id))) {
+    if (!Number(uid) || isNaN(Number(uid))) {
       loginMessage('ID를 입력하세요.');
       if (focusUserIdInput) focusUserIdInput();
       return false;
     }
 
-    if (Number(id) < 0 || Number(id) > 10) {
+    if (Number(uid) < 0 || Number(uid) > 10) {
       loginMessage('유효한 범위를 벗어났습니다.');
       if (focusUserIdInput) focusUserIdInput();
       return false;
     }
 
-    dispatch({ type: 'login', payload: { id } });
+    dispatch({ type: 'login', payload: { id, name } });
     return true;
   }, []);
 
