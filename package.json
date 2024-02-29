@@ -14,7 +14,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prettier": "prettier --write .",
     "preview": "tsc && vite preview",
-    "vite": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 && prettier --write . && tsc && vite"
+    "vite": "prettier --write . && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 && tsc && vite",
+    "reinstall": "yarn cache clean && rm -rf node_modules && rm yarn.lock && yarn"
   },
   "dependencies": {
     "@babel/core": "^7.24.0",

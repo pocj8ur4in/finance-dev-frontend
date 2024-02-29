@@ -6,6 +6,8 @@ export type LoginUser = { id: string }; // 로그인 시 필요한 사용자 정
 
 // 외부에서 로그인 컴포넌트 호출할 메서드 정의
 export type LoginHandler = {
+  loginMessage: (message: string) => void;
+
   // 사용자 ID 입력란에 포커스
   focusUserIdInput: () => void;
 };
@@ -20,13 +22,15 @@ export const Login = forwardRef((_, ref: ForwardedRef<LoginHandler>) => {
   const navigate = useNavigate();
 
   // 외부에서 호출 가능한 메서드를 정의
-  const handler = {
+  const loginHandler = {
+    loginMessage: (message: string) => alert(message),
+
     // 사용자 ID 입력란에 포커스
     focusUserIdInput: () => idRef.current?.focus(),
   };
 
   // 부모 컴포넌트에서 참조할 때 사용할 메서드 노출
-  useImperativeHandle(ref, () => handler);
+  useImperativeHandle(ref, () => loginHandler);
 
   // 로그인 버튼 클릭 시 수행
   const doLogin = (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,11 +39,11 @@ export const Login = forwardRef((_, ref: ForwardedRef<LoginHandler>) => {
     const id = idRef.current?.value;
 
     // 유효성 검사
-    if (!(id && Number(id) <= 10 && Number(id) > 0)) {
-      // 유효하지 않은 범위의 ID일 경우 경고 알림
-      alert('유효하지 않은 ID 범위입니다.');
-      return;
-    }
+    // if (!(id && Number(id) <= 10 && Number(id) > 0)) {
+    //   유효하지 않은 범위의 ID일 경우 경고 알림
+    //   alert('유효하지 않은 ID 범위입니다.');
+    //   return;
+    // }
 
     // 세션에 로그인 및 사용자 페이지 이동
     if (login(id ?? '')) navigate('/users/' + id);

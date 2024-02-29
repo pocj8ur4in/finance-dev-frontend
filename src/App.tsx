@@ -1,28 +1,34 @@
+import { useRef } from 'react';
 import { Nav } from './Nav';
 import { Route, Routes } from 'react-router-dom';
-import { Login } from './components/Login';
-import { UserLayout } from './components/UserLayout';
-import { Users } from './components/Users';
-import { UserDetail } from './components/UserDetail';
-import { AlbumLayout } from './components/AlbumLayout';
-import { Albums } from './components/Albums';
-import { AlbumDetail } from './components/AlbumDetail';
+import { Login, LoginHandler } from './components/Login';
+import { UserLayout } from './components/user/UserLayout';
+import { Users } from './components/user/Users';
+import { UserDetail } from './components/user/UserDetail';
+import { AlbumLayout } from './components/album/AlbumLayout';
+import { Albums } from './components/album/Albums';
+import { AlbumDetail } from './components/album/AlbumDetail';
+import { SessionProvider } from './contexts/session-context';
 
 function App() {
+  const loginHandlerRef = useRef<LoginHandler>(null);
+
   return (
     <>
-      <Nav />
-      <Routes>
-        <Route path='/' element={<Login />}></Route>
-        <Route path='/users/*' element={<UserLayout />}>
-          <Route index element={<Users />} />
-          <Route path=':userId/*' element={<UserDetail />} />
-          <Route path=':userId/albums/*' element={<AlbumLayout />}>
-            <Route index element={<Albums />} />
-            <Route path=':userId/albums/:albumId' element={<AlbumDetail />} />
+      <SessionProvider loginHandlerRef={loginHandlerRef}>
+        <Nav />
+        <Routes>
+          <Route path='/' element={<Login />}></Route>
+          <Route path='/users/*' element={<UserLayout />}>
+            <Route index element={<Users />} />
+            <Route path=':userId/*' element={<UserDetail />} />
+            <Route path=':userId/albums/*' element={<AlbumLayout />}>
+              <Route index element={<Albums />} />
+              <Route path=':userId/albums/:albumId' element={<AlbumDetail />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </SessionProvider>
     </>
   );
 }
