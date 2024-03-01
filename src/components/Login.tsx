@@ -1,10 +1,11 @@
 import { ForwardedRef, forwardRef, useRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSession, LoginUser } from '@/contexts/session-context';
+import { useSession } from '@/contexts/session-context';
 
 // 로그인 시 필요한 사용자 정보
-export type UserType = {
+export type LoginUser = {
   id: number;
+  name?: string;
 };
 
 // 외부에서 로그인 컴포넌트 호출할 메서드 정의
@@ -36,13 +37,34 @@ export const Login = forwardRef((_, ref: ForwardedRef<LoginHandler>) => {
   useImperativeHandle(ref, () => loginHandler);
 
   // 로그인 버튼 클릭 시 수행
-  const doLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const doLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const id = idRef.current?.value;
 
-    // 세션에 로그인 및 사용자 페이지 이동
-    if (login(id ?? '', {} as LoginUser)) navigate('albums');
+    try {
+      if (!idRef.current || !id) {
+        alert('ID를 입력하세요.');
+        idRef.current?.focus();
+        return;
+      }
+
+      if (Number(id) < 0 || Number(id) > 10) {
+        alert('유효한 ID가 아닙니다.');
+        idRef.current?.focus();
+        return;
+      }
+
+      // 앨범 페이지 이동
+      if (
+        login({
+          id: Number(id),
+        })
+      )
+        navigate('/albums');
+    } catch (error) {
+      console.log(error);
+      alert('로그인에 실패했습니다.');
+    }
   };
 
   // 사용자 ID 입력란과 로그인 버튼을 포함한 폼 렌더링
