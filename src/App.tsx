@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />}></Route>
           <Route path='/albums' element={<Album />}></Route>
-          <Route path='/photos' element={<Photo />}></Route>
+          <Route path='albums/photos' element={<Photo />}></Route>
         </Routes>
       </SessionProvider>
     </>

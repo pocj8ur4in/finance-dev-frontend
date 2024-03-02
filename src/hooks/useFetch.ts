@@ -13,6 +13,7 @@ type FetchParam<T> = {
 export const useFetch = <T>({
   url,
   options = {},
+  dependencies = [],
   defaultData,
   enable = true,
 }: FetchParam<T>) => {
@@ -57,7 +58,8 @@ export const useFetch = <T>({
     })();
 
     return () => abortController.abort(); // 컴포넌트 언마운트 시 abortController.abort()로 중단
-  }, [url, options, enable]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, dependencies);
 
   return { data, isLoading, error };
 };

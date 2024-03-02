@@ -5,7 +5,7 @@ import { useSession } from '@/contexts/session-context';
 // 로그인 시 필요한 사용자 정보
 export type LoginUser = {
   id: number;
-  name?: string;
+  name: string;
 };
 
 // 외부에서 로그인 컴포넌트 호출할 메서드 정의
@@ -55,12 +55,7 @@ export const Login = forwardRef((_, ref: ForwardedRef<LoginHandler>) => {
       }
 
       // 앨범 페이지 이동
-      if (
-        login({
-          id: Number(id),
-        })
-      )
-        navigate('/albums');
+      if (login(id)) navigate('/albums');
     } catch (error) {
       console.log(error);
       alert('로그인에 실패했습니다.');
@@ -70,9 +65,19 @@ export const Login = forwardRef((_, ref: ForwardedRef<LoginHandler>) => {
   // 사용자 ID 입력란과 로그인 버튼을 포함한 폼 렌더링
   return (
     <>
-      <form onSubmit={doLogin}>
-        <input type='text' ref={idRef} />
-        <button type='submit'>Sign-in</button>
+      <form className='max-w-sm mx-auto mt-8' onSubmit={doLogin}>
+        <input
+          type='text'
+          ref={idRef}
+          className='w-full p-2 mb-4 border border-gray-300 rounded'
+          placeholder='Enter your ID'
+        />
+        <button
+          type='submit'
+          className='w-full bg-green-600 text-white p-2 rounded cursor-pointer'
+        >
+          Sign-in
+        </button>
       </form>
     </>
   );
