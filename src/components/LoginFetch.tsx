@@ -6,6 +6,7 @@ import { useFetch } from '@/hooks/useFetch';
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
 export const LoginFetch = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<LoginUser | null>(null);
 
   const {
